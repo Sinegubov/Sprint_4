@@ -8,6 +8,13 @@ class TestBooksCollector:
     def books(self):
         return BooksCollector()
 
+    @pytest.mark.parametrize('book_name',
+                             ['', 'A'*42]
+                             )
+    def test_add_new_book_add_incorrect_name_not_added(self, book_name, books):
+        books.add_new_book(book_name)
+        assert len(books.get_books_genre()) == 0
+
     def test_add_new_book_add_two_books(self, books):
         books.add_new_book("Горе от ума")
         books.add_new_book("Евгений Онегин")
@@ -46,3 +53,10 @@ class TestBooksCollector:
         books.add_new_book(book_name)
         books.set_book_genre(book_name, genre)
         assert not books.get_book_genre(book_name) == genre
+
+    @pytest.mark.parametrize("book_name", ["Гарри Поттер", "Каштанка", "Звездные войны"])
+    def test_add_book_in_favorites_name_contained_in_favorites_true(self, books, book_name):
+        books.add_new_book(book_name)
+        books.add_book_in_favorites(book_name)
+        favorites = books.get_list_of_favorites_books()
+        assert book_name in favorites
