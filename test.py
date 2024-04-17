@@ -8,15 +8,16 @@ class TestBooksCollector:
     def books(self):
         return BooksCollector()
 
-    def test_add_new_book_name_too_short_empty_books_genre(self, books):
-        book_name = ""
+    @pytest.mark.parametrize('book_name', [
+        '',
+        "a" * 42
+    ]
+                             )
+    def test_add_new_book_name_not_valid_name_empty_books_genre(self, books, book_name):
         books.add_new_book(book_name)
         assert len(books.get_books_genre()) == 0
 
-    def test_add_new_book_name_too_long_empty_books_genre(self, books):
-        book_name = "a" * 42
-        books.add_new_book(book_name)
-        assert len(books.get_books_genre()) == 0
+
 
     def test_add_new_book_add_two_books(self, books):
         books.add_new_book("Горе от ума")
