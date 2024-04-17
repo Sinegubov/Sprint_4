@@ -25,7 +25,7 @@ class TestBooksCollector:
 
     @pytest.mark.parametrize('book_name', [
         'Тихий Дон',
-        'Макс Фрай',
+        'Макс',
         'Учебник по химии'
     ]
                              )
@@ -34,7 +34,7 @@ class TestBooksCollector:
         assert book_name in books.books_genre
 
     def test_add_new_book_empty_genre(self, books):
-        book_name = "10 негритят"
+        book_name = "Библия"
         books.add_new_book(book_name)
         assert books.get_book_genre(book_name) == ''
 
@@ -66,12 +66,6 @@ class TestBooksCollector:
 
     def test_get_books_with_specific_genre_not_valid_genre_empty_genre(self, books):
         assert len(books.get_books_with_specific_genre("Манга")) == 0
-    # @pytest.mark.parametrize('book_name, genre', [
-    #     ('Буратино', 'Мультфильмы'),])
-    # def test_get_books_with_specific_genre_2(self, books, book_name, genre):
-    #     books.add_new_book(book_name)
-    #     books.set_book_genre(book_name, genre)
-    #     assert genre in books.genre
 
     def test_get_books_for_children(self, books):
         books.add_new_book("Колобок")
@@ -88,12 +82,18 @@ class TestBooksCollector:
         books.set_book_genre(book_name, genre)
         assert book_name not in books.get_books_for_children()
 
-    def delete_book_from_favorites_true(self, books):
+    def test_delete_book_from_favorites_empty_favorites(self, books):
         book_name = "Сборник стихов"
         books.add_new_book(book_name)
         books.add_book_in_favorites(book_name)
         books.delete_book_from_favorites(book_name)
         assert books.get_list_of_favorites_books() == []
+
+    def test_get_list_of_favorites_books_not_empty_favorites(self, books):
+        book_name = "Сборник Сказок"
+        books.add_new_book(book_name)
+        books.add_book_in_favorites(book_name)
+        assert books.get_list_of_favorites_books() != []
 
     @pytest.mark.parametrize("book_name", ["Гарри Поттер", "Каштанка", "Звездные войны"])
     def test_add_book_in_favorites_name_contained_in_favorites_true(self, books, book_name):
