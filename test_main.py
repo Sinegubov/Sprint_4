@@ -64,22 +64,31 @@ class TestBooksCollector:
         books.set_book_genre("Дюна", "Фантастика")
         assert books.get_books_with_specific_genre("Фантастика") == ["Хоббит", "Дюна"]
 
-    @pytest.mark.parametrize('book_name, genre', [
-        ('Буратино', 'Мультфильмы'),])
-    def test_get_books_with_specific_genre_2(self, books, book_name, genre):
-        books.add_new_book(book_name)
-        books.set_book_genre(book_name, genre)
-        assert genre in books.genre
-
-    def test_get_books_with_specific_genre_missing_book(self, books):
-        assert len(books.get_books_with_specific_genre('Приключения')) == 0
+    def test_get_books_with_specific_genre_not_valid_genre_empty_genre(self, books):
+        assert len(books.get_books_with_specific_genre("Манга")) == 0
+    # @pytest.mark.parametrize('book_name, genre', [
+    #     ('Буратино', 'Мультфильмы'),])
+    # def test_get_books_with_specific_genre_2(self, books, book_name, genre):
+    #     books.add_new_book(book_name)
+    #     books.set_book_genre(book_name, genre)
+    #     assert genre in books.genre
 
     def test_get_books_for_children(self, books):
-        books.add_new_book("Book6")
-        books.set_book_genre("Book6", "Мультфильмы")
-        assert "Book6" in books.get_books_for_children()
-    @staticmethod
-    def delete_book_from_favorites_true(books):
+        books.add_new_book("Колобок")
+        books.set_book_genre("Колобок", "Мультфильмы")
+        assert "Колобок" in books.get_books_for_children()
+
+    @pytest.mark.parametrize('book_name, genre', [
+        ('Коломбо', 'Детективы'),
+        ('Оборотни', 'Ужасы')
+        ]
+                             )
+    def test_get_books_for_children_not_valid_genre(self, books, book_name, genre):
+        books.add_new_book(book_name)
+        books.set_book_genre(book_name, genre)
+        assert book_name not in books.get_books_for_children()
+
+    def delete_book_from_favorites_true(self, books):
         book_name = "Сборник стихов"
         books.add_new_book(book_name)
         books.add_book_in_favorites(book_name)
