@@ -1,23 +1,16 @@
 import pytest
-from main import BooksCollector
 
 
 class TestBooksCollector:
 
-    @pytest.fixture(scope='session')
-    def books(self):
-        return BooksCollector()
-
     @pytest.mark.parametrize('book_name', [
         '',
-        "a" * 42
+        "a" * 41
     ]
                              )
     def test_add_new_book_name_not_valid_name_empty_books_genre(self, books, book_name):
         books.add_new_book(book_name)
         assert len(books.get_books_genre()) == 0
-
-
 
     def test_add_new_book_add_two_books(self, books):
         books.add_new_book("Горе от ума")
@@ -25,9 +18,10 @@ class TestBooksCollector:
         assert len(books.get_books_genre()) == 2
 
     @pytest.mark.parametrize('book_name', [
-        'Тихий Дон',
-        'Макс',
-        'Учебник по химии'
+        '活着',
+        '📚',
+        'a',
+        'B'*40
     ]
                              )
     def test_add_new_book_valid_name(self, books, book_name):
