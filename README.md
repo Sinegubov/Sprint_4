@@ -11,7 +11,7 @@
 
 Запустить тесты из терминала можно командой:
 
-`pytest -v tests.py `
+`pytest -v test.py `
 
 Представленные в файле test.py методы тестового класса TestBooksCollector описаны ниже:
 
